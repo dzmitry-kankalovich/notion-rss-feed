@@ -1,5 +1,5 @@
 .idea
-*.js
+!resources/lambda/*.js
 !jest.config.js
 !index.js
 *.d.ts

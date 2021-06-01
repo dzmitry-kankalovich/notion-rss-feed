@@ -9,14 +9,12 @@ config()
 
 const {
   NOTION_INTEGRATION_TOKEN = '',
-  NOTION_PAGE_NAME = '',
-  RSS_FEED_URL = ''
+  NOTION_PAGE_NAME = ''
 } = process.env
 
 assert(
     NOTION_INTEGRATION_TOKEN &&
     NOTION_PAGE_NAME &&
-    RSS_FEED_URL,
     'No valid configuration provided. Cancelling deploy...'
 )
 
@@ -32,8 +30,7 @@ export class NotionRssFeedStack extends cdk.Stack {
       timeout: cdk.Duration.seconds(300),
       environment: {
         NOTION_INTEGRATION_TOKEN,
-        NOTION_PAGE_NAME,
-        RSS_FEED_URL
+        NOTION_PAGE_NAME
       }
     });
 

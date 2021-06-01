@@ -1,0 +1,22 @@
+{
+  "rss": [
+    {
+      "url": "https://aws.amazon.com/about-aws/whats-new/recent/feed/",
+      "title": "AWS Feed",
+      "limit": 20,
+      "updates_only": false
+    },
+    {
+      "url": "https://www.youtube.com/feeds/videos.xml?playlist_id=PLI1_CQcV71RmeydXo-5K7DAxLsUX6SVhL",
+      "title": "A Cloud Guru AWS Weekly News",
+      "limit": 5,
+      "updates_only": true
+    },
+    {
+      "url": "https://microservices.io/feed.xml",
+      "title": "Microservices",
+      "limit": 10,
+      "updates_only": true
+    }
+  ]
+}

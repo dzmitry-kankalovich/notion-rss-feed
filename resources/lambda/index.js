@@ -1,15 +1,13 @@
-const Parser = require('rss-parser');
+const config = require('./rss-config.json')
+const { transformRss } = require('./rss_transformer')
 const { Client } = require("@notionhq/client");
 
-const parser = new Parser();
 const notion = new Client({ auth: process.env.NOTION_INTEGRATION_TOKEN });
 const page_name = process.env.NOTION_PAGE_NAME;
-const feed_url = process.env.RSS_FEED_URL;
 
 exports.handler = async function () {
 
-  // pull & parse RSS feed
-  const feed = await parser.parseURL(feed_url);
+  const lists = await transformRss(config);
 
   // search for the specified RSS page
   const searchResult = await notion.search({
@@ -24,30 +22,11 @@ exports.handler = async function () {
   // Grab the target page ID for further usage
   const page_id = searchResult.results[0].id;
 
-  // Prepare the page contents on the basis of RSS feed
-  const list_items = feed.items.map(item => {
-    return {
-      "object": "block",
-      "type": "bulleted_list_item",
-      "bulleted_list_item": {
-        "text": [
-          {
-            "type": "text",
-            "text": {
-              "content": item.title,
-              "link": { "type": "url", "url": item.link }
-            }
-          }
-        ]
-      }
-    }
-  })
-
   // Create a new page with RSS items
   try {
     await notion.request({
       path: 'pages',
-      method: "POST",
+      method: "post",
       body: {
         "parent": { "page_id": page_id },
         "properties": {
@@ -59,7 +38,7 @@ exports.handler = async function () {
             }
           ],
         },
-        "children": list_items
+        "children": lists
       }
     })
   } catch (error) {
