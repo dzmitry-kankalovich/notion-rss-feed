@@ -6,7 +6,7 @@ const notion = new Client({ auth: process.env.NOTION_INTEGRATION_TOKEN });
 const page_name = process.env.NOTION_PAGE_NAME;
 const feed_url = process.env.RSS_FEED_URL;
 
-exports.handler = async function (event) {
+exports.handler = async function () {
 
   // pull & parse RSS feed
   const feed = await parser.parseURL(feed_url);
@@ -16,7 +16,7 @@ exports.handler = async function (event) {
     query: page_name
   })
 
-  if (searchResult.results.length == 0) {
+  if (searchResult.results.length === 0) {
     console.error('Cannot find RSS page. Cancelling execution...')
     return false
   }
@@ -25,7 +25,7 @@ exports.handler = async function (event) {
   const page_id = searchResult.results[0].id;
 
   // Prepare the page contents on the basis of RSS feed
-  list_items = feed.items.map(item => {
+  const list_items = feed.items.map(item => {
     return {
       "object": "block",
       "type": "bulleted_list_item",

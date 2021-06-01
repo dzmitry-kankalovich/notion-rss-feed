@@ -3,19 +3,22 @@ import * as lambda from '@aws-cdk/aws-lambda';
 import * as targets from "@aws-cdk/aws-events-targets";
 import * as events from "@aws-cdk/aws-events";
 import { config } from 'dotenv';
+import * as assert from 'assert';
 
 config()
 
-const NOTION_INTEGRATION_TOKEN = process.env.NOTION_INTEGRATION_TOKEN || '';
-const NOTION_PAGE_NAME = process.env.NOTION_PAGE_NAME || '';
-const RSS_FEED_URL = process.env.RSS_FEED_URL || '';
+const {
+  NOTION_INTEGRATION_TOKEN = '',
+  NOTION_PAGE_NAME = '',
+  RSS_FEED_URL = ''
+} = process.env
 
-if (!NOTION_INTEGRATION_TOKEN ||
-  !NOTION_PAGE_NAME ||
-  !RSS_FEED_URL) {
-  console.log('No configuration provided. Cancelling deploy...')
-  process.exit(1)
-}
+assert(
+    NOTION_INTEGRATION_TOKEN &&
+    NOTION_PAGE_NAME &&
+    RSS_FEED_URL,
+    'No valid configuration provided. Cancelling deploy...'
+)
 
 export class NotionRssFeedStack extends cdk.Stack {
   constructor(scope: cdk.App, id: string, props?: cdk.StackProps) {
